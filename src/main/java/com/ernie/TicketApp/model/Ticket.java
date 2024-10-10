@@ -1,13 +1,12 @@
-package com.ernie.TicketApp;
+package com.ernie.TicketApp.model;
+
+import com.ernie.TicketApp.constraint.NullableWarning;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Ticket extends Entity {
-
-    @NullableWarning
-    private UUID id = UUID.randomUUID();
 
     private String concertHall;
     private int eventCode;
@@ -64,20 +63,7 @@ public class Ticket extends Entity {
         System.out.println("Ticket " + id + " was shared to phone number " + phone + " and to email " + email);
     }
 
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id='" + id + '\'' +
-                ", concertHall='" + concertHall + '\'' +
-                ", eventCode=" + eventCode +
-                ", timeUnixTimeStamp=" + time +
-                ", isPromo=" + isPromo +
-                ", stadiumSector=" + stadiumSector +
-                ", maxBackpackWeightInKg=" + maxBackpackWeightInKg +
-                ", price=" + price +
-                ", creationDateTime=" + creationDateTime +
-                '}';
-    }
+
 
     public String getConcertHall() {
         return concertHall;
@@ -130,5 +116,20 @@ public class Ticket extends Entity {
     @Override
     public int hashCode() {
         return Objects.hash(id, concertHall, eventCode, time, isPromo, stadiumSector, maxBackpackWeightInKg, price, creationDateTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", concertHall='" + concertHall + '\'' +
+                ", eventCode=" + eventCode +
+                ", timeUnixTimeStamp=" + time +
+                ", isPromo=" + isPromo +
+                ", stadiumSector=" + stadiumSector +
+                ", maxBackpackWeightInKg=" + maxBackpackWeightInKg +
+                ", price=" + price +
+                ", creationDateTime=" + creationDateTime +
+                '}';
     }
 }

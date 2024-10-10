@@ -1,4 +1,4 @@
-package com.ernie.TicketApp;
+package com.ernie.TicketApp.constraint;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

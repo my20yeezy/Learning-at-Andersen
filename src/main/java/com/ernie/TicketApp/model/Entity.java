@@ -1,9 +1,13 @@
-package com.ernie.TicketApp;
+package com.ernie.TicketApp.model;
+
+import com.ernie.TicketApp.constraint.NullableWarning;
 
 import java.util.UUID;
 
 public abstract class Entity implements Printable {
-    private UUID id;
+
+    @NullableWarning
+    private UUID id = UUID.randomUUID();
 
     public UUID getId() {
         return id;

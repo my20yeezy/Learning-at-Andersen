@@ -1,4 +1,4 @@
-package com.ernie.TicketApp;
+package com.ernie.TicketApp.model;
 
 public interface Printable {
     default void print() {

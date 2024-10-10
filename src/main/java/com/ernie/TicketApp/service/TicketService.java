@@ -1,8 +1,13 @@
-package com.ernie.TicketApp;
+package com.ernie.TicketApp.service;
+
+import com.ernie.TicketApp.constraint.NullCheckUtility;
+import com.ernie.TicketApp.model.Admin;
+import com.ernie.TicketApp.model.Client;
+import com.ernie.TicketApp.model.Entity;
+import com.ernie.TicketApp.model.Ticket;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.UUID;
 
 public class TicketService extends Entity {
     public static void main(String[] args) {
