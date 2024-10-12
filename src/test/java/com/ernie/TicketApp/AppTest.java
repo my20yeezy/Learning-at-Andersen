@@ -1,4 +1,4 @@
-package com.ernie.learn;
+package com.ernie.TicketApp;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
