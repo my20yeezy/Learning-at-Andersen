@@ -7,7 +7,7 @@ import java.util.UUID;
 public abstract class Entity implements Printable {
 
     @NullableWarning
-    private UUID id = UUID.randomUUID();
+    public UUID id = UUID.randomUUID();
 
     public UUID getId() {
         return id;
