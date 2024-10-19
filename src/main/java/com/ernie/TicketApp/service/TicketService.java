@@ -1,5 +1,7 @@
 package com.ernie.TicketApp.service;
 
+import com.ernie.HW6CustomStorages.MyArrayList;
+import com.ernie.HW6CustomStorages.MyHashSet;
 import com.ernie.TicketApp.constraint.NullCheckUtility;
 import com.ernie.TicketApp.model.Admin;
 import com.ernie.TicketApp.model.Client;
@@ -50,5 +52,48 @@ public class TicketService extends Entity {
 
         ticketFull.shared("+7707777232424");
         ticketFull.shared("+7707777232424", "some_email@mail.com");
+
+        System.out.println("Testing custom ArrayList");
+        MyArrayList myArrayList = new MyArrayList();
+        myArrayList.put("Element 1");
+        myArrayList.put("Element 2");
+        myArrayList.put("Element 3");
+        myArrayList.put("Element 4");
+        myArrayList.put("Element 5");
+        myArrayList.put("Element 6");
+        myArrayList.put("Element 7");
+        myArrayList.put("Element 8");
+        myArrayList.put("Element 9");
+        myArrayList.put("Element 10");
+        myArrayList.put("Element 11");
+
+        myArrayList.printAll();
+        System.out.println(myArrayList.size() + " " + myArrayList.capacity() + "\n");
+        System.out.println(myArrayList.getByIndex(4) + "\n");
+
+        myArrayList.deleteByIndex(4);
+        myArrayList.printAll();
+        System.out.println(myArrayList.size() + " " + myArrayList.capacity() + "\n");
+
+        myArrayList.print();
+
+        System.out.println("Testing custom HashSet");
+        MyHashSet myHashSet = new MyHashSet();
+        myHashSet.put("Element 1");
+        myHashSet.put("Element 2");
+        myHashSet.put("Element 3");
+        myHashSet.put("Element 3");
+        myHashSet.put("Element 3");
+
+        myHashSet.print();
+
+        System.out.println(myHashSet.contains("Element 4"));
+        System.out.println(myHashSet.contains("Element 2"));
+
+        myHashSet.delete("Element 1");
+
+        myHashSet.print();
+
+        System.out.println(myHashSet.size());
     }
 }
