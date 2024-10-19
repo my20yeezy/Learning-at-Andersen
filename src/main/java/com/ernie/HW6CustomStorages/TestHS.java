@@ -9,17 +9,12 @@ public class TestHS {
         myHashSet.put("Element 3");
         myHashSet.put("Element 3");
 
-        for (String s: myHashSet.iterate()) {
-            System.out.println(s);
-        }
+        myHashSet.print();
 
         System.out.println(myHashSet.contains("Element 4"));
         System.out.println(myHashSet.contains("Element 2"));
 
         myHashSet.delete("Element 1");
-        for (String s: myHashSet.iterate()) {
-            System.out.println(s);
-        }
 
         myHashSet.print();
 
