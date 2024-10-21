@@ -16,6 +16,7 @@ public class Ticket extends Entity {
     private double maxBackpackWeightInKg;
     private double price;
     private LocalDateTime creationDateTime;
+    private TicketType ticketType;
 
     public Ticket(String concertHall, int eventCode, LocalDateTime time, boolean isPromo, char stadiumSector, double maxBackpackWeightInKg) {
 
@@ -97,12 +98,24 @@ public class Ticket extends Entity {
         return creationDateTime;
     }
 
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
+
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
     public void setStadiumSector(char stadiumSector) {
         this.stadiumSector = stadiumSector;
+    }
+
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
     }
 
     @Override
@@ -121,15 +134,16 @@ public class Ticket extends Entity {
     @Override
     public String toString() {
         return "Ticket{" +
-                "id='" + id + '\'' +
-                ", concertHall='" + concertHall + '\'' +
+                "concertHall='" + concertHall + '\'' +
                 ", eventCode=" + eventCode +
-                ", timeUnixTimeStamp=" + time +
+                ", time=" + time +
                 ", isPromo=" + isPromo +
                 ", stadiumSector=" + stadiumSector +
                 ", maxBackpackWeightInKg=" + maxBackpackWeightInKg +
                 ", price=" + price +
                 ", creationDateTime=" + creationDateTime +
+                ", ticketType=" + ticketType +
+                ", id=" + id +
                 '}';
     }
 }
