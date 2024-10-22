@@ -14,8 +14,9 @@ import java.util.UUID;
 public class TicketService extends Entity {
     public static void main(String[] args) {
 
+        System.out.println("============================= HW 2 (Classes, Variables) ====================================");
+
         LocalDateTime dateTime = LocalDateTime.of(2024, 10, 5, 20, 0, 0);
-        Long timeInUnixTimeStamp = dateTime.toEpochSecond(ZoneOffset.UTC);
 
         Ticket ticketFull = new Ticket(
                 "MainHall",
@@ -25,31 +26,80 @@ public class TicketService extends Entity {
                 'A',
                 1
         );
+        ticketFull.print();
+
+        System.out.println("============================= HW 4 (OOP) ====================================");
+        Client client1 = new Client("Yerniyaz");
+        client1.printRole();
+        client1.print();
+        client1.getTicket(ticketFull);
+
+        Admin admin = new Admin("Admin");
+        admin.checkTicket(ticketFull);
+
+        ticketFull.shared("+7707777232424");
+        ticketFull.shared("+7707777232424", "some_email@mail.com");
+
+        System.out.println("============================= HW 6 (Data Structures) ====================================");
+        System.out.println("Testing custom ArrayList");
+        MyArrayList myArrayList = new MyArrayList();
+        myArrayList.put("Element 1");
+        myArrayList.put("Element 2");
+        myArrayList.put("Element 3");
+        myArrayList.put("Element 4");
+        myArrayList.put("Element 5");
+        myArrayList.put("Element 6");
+        myArrayList.put("Element 7");
+        myArrayList.put("Element 8");
+        myArrayList.put("Element 9");
+        myArrayList.put("Element 10");
+        myArrayList.put("Element 11");
+
+        myArrayList.printAll();
+        System.out.println(myArrayList.size() + " " + myArrayList.capacity() + "\n");
+        System.out.println(myArrayList.getByIndex(4) + "\n");
+
+        myArrayList.deleteByIndex(4);
+        myArrayList.printAll();
+        System.out.println(myArrayList.size() + " " + myArrayList.capacity() + "\n");
+
+        myArrayList.print();
+
+        System.out.println("Testing custom HashSet");
+        MyHashSet myHashSet = new MyHashSet();
+        myHashSet.put("Element 1");
+        myHashSet.put("Element 2");
+        myHashSet.put("Element 3");
+        myHashSet.put("Element 3");
+        myHashSet.put("Element 3");
+
+        myHashSet.print();
+
+        System.out.println(myHashSet.contains("Element 4"));
+        System.out.println(myHashSet.contains("Element 2"));
+
+        myHashSet.delete("Element 1");
+
+        myHashSet.print();
 
         ticketFull.setTicketType(TicketType.DAY);
 
-        Client client1 = new Client("Yerniyaz");
-//        client1.printRole();
-//        client1.print();
-//        client1.getTicket(ticketLimited);
+        System.out.println("============================= HW 8 (JDBC) ====================================");
 
         UserDAO userDAO = new UserDAO();
-//        userDAO.saveUser(client1);
+        TicketDAO ticketDAO = new TicketDAO();
 
-        Admin admin = new Admin("Admin");
-//        admin.checkTicket(ticketFull);
+        userDAO.saveUser(client1);
 
-//        userDAO.deleteUserById(UUID.fromString("d967d60c-167b-43b0-ba13-d08f0c59a721"));
-//        userDAO.saveUser(admin);
+        userDAO.deleteUserById(UUID.fromString("d967d60c-167b-43b0-ba13-d08f0c59a721"));
+        userDAO.saveUser(admin);
 
-        User userFromDB = userDAO.fetchById(UUID.fromString("df868a97-df51-4639-a57f-4f84ed5086e3"));
+        User userFromDB = userDAO.fetchById(UUID.fromString("4bf70e48-683d-45a8-8427-f4613f55ade3"));
         System.out.println(userFromDB);
 
+        ticketDAO.saveTicket(ticketFull, userFromDB);
 
-        TicketDAO ticketDAO = new TicketDAO();
-//        ticketDAO.saveTicket(ticketFull, userFromDB);
-
-        Ticket ticketFromDB = ticketDAO.fetchById(UUID.fromString("34227935-f280-41e9-bba9-bbcdc69f9dba"));
+        Ticket ticketFromDB = ticketDAO.fetchById(UUID.fromString("278e7e12-e84e-4c95-8217-46d7a0dc5808"));
         ticketFromDB.print();
         ticketDAO.updateTicketType(ticketFromDB, TicketType.WEEK);
         Ticket updatedTicketFromDB = ticketDAO.fetchById(ticketFromDB.getId());
@@ -58,48 +108,6 @@ public class TicketService extends Entity {
         Ticket ticket1 = new Ticket();
         ticket1.setId(UUID.fromString("34227935-f280-41e9-bba9-bbcdc69f9dba"));
         userDAO.deleteUserByTicket(ticket1);
-
-//        ticketEmpty.setId(null);
-//        System.out.println(ticketEmpty.getId());
-//        NullCheckUtility.validateNotNull(ticketEmpty);
-//
-//        ticketFull.shared("+7707777232424");
-//        ticketFull.shared("+7707777232424", "some_email@mail.com");
-
-//        System.out.println("Testing custom ArrayList");
-//        MyArrayList myArrayList = new MyArrayList();
-//        myArrayList.put("Element 1");
-//        myArrayList.put("Element 2");
-//        myArrayList.put("Element 3");
-//        myArrayList.put("Element 4");
-//        myArrayList.put("Element 5");
-//        myArrayList.put("Element 6");
-//        myArrayList.put("Element 7");
-//        myArrayList.put("Element 8");
-//        myArrayList.put("Element 9");
-//        myArrayList.put("Element 10");
-//        myArrayList.put("Element 11");
-//        myArrayList.printAll();
-//        System.out.println(myArrayList.size() + " " + myArrayList.capacity() + "\n");
-//        System.out.println(myArrayList.getByIndex(4) + "\n");
-//        myArrayList.deleteByIndex(4);
-//        myArrayList.printAll();
-//        System.out.println(myArrayList.size() + " " + myArrayList.capacity() + "\n");
-//        myArrayList.print();
-//
-//        System.out.println("Testing custom HashSet");
-//        MyHashSet myHashSet = new MyHashSet();
-//        myHashSet.put("Element 1");
-//        myHashSet.put("Element 2");
-//        myHashSet.put("Element 3");
-//        myHashSet.put("Element 3");
-//        myHashSet.put("Element 3");
-//        myHashSet.print();
-//        System.out.println(myHashSet.contains("Element 4"));
-//        System.out.println(myHashSet.contains("Element 2"));
-//        myHashSet.delete("Element 1");
-//        myHashSet.print();
-//        System.out.println(myHashSet.size());
 
     }
 }
