@@ -30,3 +30,12 @@ CREATE TABLE ticket_info
 );
 ALTER TABLE IF EXISTS ticket_info
     OWNER to postgres;
+
+ALTER TABLE ticket_info
+DROP CONSTRAINT ticket_info_user_id_fkey;
+
+ALTER TABLE ticket_info
+ADD CONSTRAINT ticket_info_user_id_fkey
+FOREIGN KEY (user_id)
+REFERENCES user_info (id)
+ON DELETE CASCADE;

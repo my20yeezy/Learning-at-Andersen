@@ -2,13 +2,12 @@ package com.ernie.TicketApp.service;
 
 import com.ernie.HW6CustomStorages.MyArrayList;
 import com.ernie.HW6CustomStorages.MyHashSet;
-import com.ernie.TicketApp.constraint.NullCheckUtility;
 import com.ernie.TicketApp.model.*;
 import com.ernie.TicketApp.repository.TicketDAO;
 import com.ernie.TicketApp.repository.UserDAO;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
 
 public class TicketService extends Entity {
@@ -28,7 +27,7 @@ public class TicketService extends Entity {
         );
         ticketFull.print();
 
-        System.out.println("============================= HW 4 (OOP) ====================================");
+        System.out.println("\n============================= HW 4 (OOP) ====================================");
         Client client1 = new Client("Yerniyaz");
         client1.printRole();
         client1.print();
@@ -40,7 +39,7 @@ public class TicketService extends Entity {
         ticketFull.shared("+7707777232424");
         ticketFull.shared("+7707777232424", "some_email@mail.com");
 
-        System.out.println("============================= HW 6 (Data Structures) ====================================");
+        System.out.println("\n============================= HW 6 (Data Structures) ====================================");
         System.out.println("Testing custom ArrayList");
         MyArrayList myArrayList = new MyArrayList();
         myArrayList.put("Element 1");
@@ -84,30 +83,45 @@ public class TicketService extends Entity {
 
         ticketFull.setTicketType(TicketType.DAY);
 
-        System.out.println("============================= HW 8 (JDBC) ====================================");
+        System.out.println("\n============================= HW 8 (JDBC) ====================================");
 
         UserDAO userDAO = new UserDAO();
         TicketDAO ticketDAO = new TicketDAO();
+        System.out.printf("Established DAO for Users and Tickets.");
 
         userDAO.saveUser(client1);
-
-        userDAO.deleteUserById(UUID.fromString("d967d60c-167b-43b0-ba13-d08f0c59a721"));
         userDAO.saveUser(admin);
 
-        User userFromDB = userDAO.fetchById(UUID.fromString("4bf70e48-683d-45a8-8427-f4613f55ade3"));
-        System.out.println(userFromDB);
+        List<User> allUsersFromDB = userDAO.getAllUsers();
+        System.out.println(allUsersFromDB);
 
-        ticketDAO.saveTicket(ticketFull, userFromDB);
+        System.out.println("Deleting first user, if any:");
+        if (allUsersFromDB.size() > 0) {
+            userDAO.deleteUserById(allUsersFromDB.get(0).getId());
+        }
 
-        Ticket ticketFromDB = ticketDAO.fetchById(UUID.fromString("278e7e12-e84e-4c95-8217-46d7a0dc5808"));
-        ticketFromDB.print();
-        ticketDAO.updateTicketType(ticketFromDB, TicketType.WEEK);
-        Ticket updatedTicketFromDB = ticketDAO.fetchById(ticketFromDB.getId());
+        User secondUserFromDB = null;
+        if (allUsersFromDB.size() > 1) {
+            secondUserFromDB = allUsersFromDB.get(1);
+        }
+        System.out.println("Second User from DB: " + secondUserFromDB);
+
+        ticketDAO.saveTicket(ticketFull, secondUserFromDB);
+
+        List<Ticket> allTicketsFromDB = ticketDAO.getAllTickets();
+        System.out.println(allTicketsFromDB);
+
+        Ticket firstTicketFromDB = null;
+        if (allTicketsFromDB.size() > 0) {
+            firstTicketFromDB = allTicketsFromDB.get(0);
+        }
+        System.out.println("First Ticket from DB: " + firstTicketFromDB);
+
+        ticketDAO.updateTicketType(firstTicketFromDB, TicketType.WEEK);
+        Ticket updatedTicketFromDB = ticketDAO.getTicketById(firstTicketFromDB.getId());
         updatedTicketFromDB.print();
 
-        Ticket ticket1 = new Ticket();
-        ticket1.setId(UUID.fromString("34227935-f280-41e9-bba9-bbcdc69f9dba"));
-        userDAO.deleteUserByTicket(ticket1);
+        userDAO.deleteUserByTicket(firstTicketFromDB);
 
     }
 }

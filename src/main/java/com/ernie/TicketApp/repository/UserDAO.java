@@ -6,6 +6,8 @@ import com.ernie.TicketApp.model.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UserDAO {
@@ -23,7 +25,7 @@ public class UserDAO {
         }
     }
 
-    public User fetchById(UUID id) {
+    public User getUserById(UUID id) {
         User user = null;
         String SQLStatement = "SELECT * FROM user_info WHERE id = ?";
         try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
@@ -32,7 +34,7 @@ public class UserDAO {
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
                 user = new User(name);
-                user.setId(id);
+                user.setId(UUID.fromString(resultSet.getString("id")));
                 user.setCreationDateTime(LocalDateTime.parse(resultSet.getString("creation_date")));
             }
         } catch (SQLException e) {
@@ -62,4 +64,23 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
+    public List<User> getAllUsers() {
+        List<User> allUsers = new ArrayList<>();
+        String SQLStatement = "SELECT * FROM user_info";
+        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User(resultSet.getString("name"));
+                user.setId(UUID.fromString(resultSet.getString("id")));
+                user.setCreationDateTime(LocalDateTime.parse(resultSet.getString("creation_date")));
+                allUsers.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Got " + allUsers.size() + " Users from DB.");
+        return allUsers;
+    }
+
 }

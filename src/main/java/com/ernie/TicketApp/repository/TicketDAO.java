@@ -7,6 +7,8 @@ import com.ernie.TicketApp.model.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class TicketDAO {
@@ -25,7 +27,7 @@ public class TicketDAO {
         }
     }
 
-    public Ticket fetchById(UUID ticketId) {
+    public Ticket getTicketById(UUID ticketId) {
         Ticket ticket = null;
         String SQLStatement = "SELECT * FROM ticket_info WHERE id = ?";
         try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
@@ -55,6 +57,25 @@ public class TicketDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Ticket> getAllTickets() {
+        List<Ticket> allTickets = new ArrayList<>();
+        String SQLStatement = "SELECT * FROM ticket_info";
+        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setId(UUID.fromString(resultSet.getString("id")));
+                ticket.setTicketType(TicketType.valueOf(resultSet.getString("ticket_type")));
+                ticket.setCreationDateTime(LocalDateTime.parse(resultSet.getString("creation_date")));
+                allTickets.add(ticket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Got " + allTickets.size() + " Tickets from DB.");
+        return allTickets;
     }
 
 }
