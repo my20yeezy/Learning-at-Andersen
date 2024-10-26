@@ -1,16 +1,27 @@
 package com.ernie.TicketApp.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-public class User extends Entity {
+@Entity
+@Table(name = "users_info")
+public class User extends AbstractEntity {
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "creation_date")
     private LocalDateTime creationDateTime;
 
     public User(String name) {
         this.name = name;
-        id = UUID.randomUUID();
+        creationDateTime = LocalDateTime.now();
+    }
+
+    public User() {
         creationDateTime = LocalDateTime.now();
     }
 

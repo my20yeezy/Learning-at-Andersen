@@ -8,9 +8,8 @@ import com.ernie.TicketApp.repository.UserDAO;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
-public class TicketService extends Entity {
+public class TicketService extends AbstractEntity {
     public static void main(String[] args) {
 
         System.out.println("============================= HW 2 (Classes, Variables) ====================================");
@@ -84,19 +83,24 @@ public class TicketService extends Entity {
         ticketFull.setTicketType(TicketType.DAY);
 
         System.out.println("\n============================= HW 8 (JDBC) ====================================");
+        System.out.println("\n============================= HW 9 (Hibernate) ====================================");
+        System.out.println("Following operations are now executed by Hibernate instead of JDBC.");
 
         UserDAO userDAO = new UserDAO();
         TicketDAO ticketDAO = new TicketDAO();
         System.out.printf("Established DAO for Users and Tickets.");
 
-        userDAO.saveUser(client1);
-        userDAO.saveUser(admin);
+        User user1 = new User("Tirion");
+        userDAO.saveUser(user1);
+        User user2 = new User("Jaime");
+        userDAO.saveUser(user2);
 
         List<User> allUsersFromDB = userDAO.getAllUsers();
         System.out.println(allUsersFromDB);
+        userDAO.deleteUser(user1);
 
         System.out.println("Deleting first user, if any:");
-        if (allUsersFromDB.size() > 0) {
+        if (!allUsersFromDB.isEmpty()) {
             userDAO.deleteUserById(allUsersFromDB.get(0).getId());
         }
 
@@ -106,7 +110,7 @@ public class TicketService extends Entity {
         }
         System.out.println("Second User from DB: " + secondUserFromDB);
 
-        ticketDAO.saveTicket(ticketFull, secondUserFromDB);
+        ticketDAO.saveTicket(ticketFull);
 
         List<Ticket> allTicketsFromDB = ticketDAO.getAllTickets();
         System.out.println(allTicketsFromDB);
@@ -116,12 +120,6 @@ public class TicketService extends Entity {
             firstTicketFromDB = allTicketsFromDB.get(0);
         }
         System.out.println("First Ticket from DB: " + firstTicketFromDB);
-
-        ticketDAO.updateTicketType(firstTicketFromDB, TicketType.WEEK);
-        Ticket updatedTicketFromDB = ticketDAO.getTicketById(firstTicketFromDB.getId());
-        updatedTicketFromDB.print();
-
-        userDAO.deleteUserByTicket(firstTicketFromDB);
 
     }
 }

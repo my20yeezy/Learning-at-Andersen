@@ -1,12 +1,13 @@
 package com.ernie.TicketApp.model;
 
-import com.ernie.TicketApp.constraint.NullableWarning;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
-public class Ticket extends Entity {
+@Entity
+@Table(name = "tickets_info")
+public class Ticket extends AbstractEntity {
 
     private String concertHall;
     private int eventCode;
@@ -15,8 +16,16 @@ public class Ticket extends Entity {
     private char stadiumSector;
     private double maxBackpackWeightInKg;
     private double price;
+
+    @Column(name = "creation_date")
     private LocalDateTime creationDateTime;
+
+    @Column(name = "ticket_type")
+    @Enumerated(EnumType.STRING)
     private TicketType ticketType;
+
+    @Column(name = "user_id")
+    private long userId;
 
     public Ticket(String concertHall, int eventCode, LocalDateTime time, boolean isPromo, char stadiumSector, double maxBackpackWeightInKg) {
 
