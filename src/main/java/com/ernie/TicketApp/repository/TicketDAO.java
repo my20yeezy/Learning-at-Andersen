@@ -3,16 +3,18 @@ package com.ernie.TicketApp.repository;
 import com.ernie.TicketApp.model.Ticket;
 import com.ernie.TicketApp.model.TicketType;
 import com.ernie.TicketApp.model.User;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Component
+@Repository
 public class TicketDAO {
 
     private DataSource dataSource;
