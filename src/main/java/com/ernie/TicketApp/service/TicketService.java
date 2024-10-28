@@ -2,10 +2,12 @@ package com.ernie.TicketApp.service;
 
 import com.ernie.HW6CustomStorages.MyArrayList;
 import com.ernie.HW6CustomStorages.MyHashSet;
+import com.ernie.TicketApp.ApplicationContext;
 import com.ernie.TicketApp.model.*;
 import com.ernie.TicketApp.repository.TicketDAO;
 import com.ernie.TicketApp.repository.UserDAO;
 
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -84,9 +86,12 @@ public class TicketService extends Entity {
         ticketFull.setTicketType(TicketType.DAY);
 
         System.out.println("\n============================= HW 8 (JDBC) ====================================");
+        System.out.println("\n============================= HW 10 (Spring Core) ====================================");
+        System.out.println("Updated using Spring Core DI and IoC. \n");
 
-        UserDAO userDAO = new UserDAO();
-        TicketDAO ticketDAO = new TicketDAO();
+        ApplicationContext applicationContext = new ApplicationContext();
+        UserDAO userDAO = applicationContext.userDAO();
+        TicketDAO ticketDAO = applicationContext.ticketDAO();
         System.out.printf("Established DAO for Users and Tickets.");
 
         userDAO.saveUser(client1);
@@ -122,6 +127,12 @@ public class TicketService extends Entity {
         updatedTicketFromDB.print();
 
         userDAO.deleteUserByTicket(firstTicketFromDB);
+
+        userDAO.saveUser(admin);
+
+        Ticket ticket = new Ticket();
+        ticket.setTicketType(TicketType.WEEK);
+        ticketDAO.saveTicket(ticket, admin);
 
     }
 }

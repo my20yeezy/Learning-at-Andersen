@@ -1,20 +1,30 @@
 package com.ernie.TicketApp.repository;
 
-import com.ernie.TicketApp.config.ConnectionConfig;
 import com.ernie.TicketApp.model.Ticket;
 import com.ernie.TicketApp.model.User;
+import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public class UserDAO {
+
+    private DataSource dataSource;
+
+    public UserDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public void saveUser(User user) {
         String SQLStatement = "INSERT INTO user_info (id, name, creation_date) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)){
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)){
             preparedStatement.setString(1, user.getId().toString());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getCreationDateTime().toString());
@@ -28,7 +38,7 @@ public class UserDAO {
     public User getUserById(UUID id) {
         User user = null;
         String SQLStatement = "SELECT * FROM user_info WHERE id = ?";
-        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)) {
             preparedStatement.setString(1, id.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -45,7 +55,7 @@ public class UserDAO {
 
     public void deleteUserById(UUID userId) {
         String SQLStatement = "DELETE FROM user_info WHERE id = ?";
-        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)) {
             preparedStatement.setString(1, userId.toString());
             preparedStatement.executeUpdate();
             System.out.println("User with ID " + userId + " was deleted from DB.");
@@ -56,7 +66,7 @@ public class UserDAO {
 
     public void deleteUserByTicket(Ticket ticket) {
         String SQLStatement = "DELETE FROM user_info WHERE id = (SELECT user_id FROM ticket_info WHERE id = ?)";
-        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)) {
             preparedStatement.setString(1, ticket.getId().toString());
             preparedStatement.executeUpdate();
             System.out.println("User with ticket ID " + ticket.getId() + " was deleted from DB.");
@@ -68,7 +78,7 @@ public class UserDAO {
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         String SQLStatement = "SELECT * FROM user_info";
-        try (PreparedStatement preparedStatement = ConnectionConfig.getConnection().prepareStatement(SQLStatement)) {
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new User(resultSet.getString("name"));
