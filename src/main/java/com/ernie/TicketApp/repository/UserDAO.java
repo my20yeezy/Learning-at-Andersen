@@ -1,8 +1,10 @@
 package com.ernie.TicketApp.repository;
 
 import com.ernie.TicketApp.model.Ticket;
+import com.ernie.TicketApp.model.TicketType;
 import com.ernie.TicketApp.model.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -24,7 +26,7 @@ public class UserDAO {
 
     public void saveUser(User user) {
         String SQLStatement = "INSERT INTO user_info (id, name, creation_date) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)){
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)) {
             preparedStatement.setString(1, user.getId().toString());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getCreationDateTime().toString());
@@ -91,6 +93,48 @@ public class UserDAO {
         }
         System.out.println("Got " + allUsers.size() + " Users from DB.");
         return allUsers;
+    }
+
+    @Transactional
+    public void updateUserAddTicket(UUID id) {
+        User user = null;
+        Ticket newTicket = new Ticket();
+        newTicket.setTicketType(TicketType.MONTH);
+        String SQLStatementGetUser = "SELECT * FROM user_info WHERE id = ?";
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatementGetUser)) {
+            preparedStatement.setString(1, id.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                user = new User(name);
+                user.setId(UUID.fromString(resultSet.getString("id")));
+                user.setCreationDateTime(LocalDateTime.parse(resultSet.getString("creation_date")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        String SQLStatementSetTicketToUser = "INSERT INTO ticket_info (id, user_id, ticket_type, creation_date) VALUES (?, ?, ?::ticket_type, ?)";
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatementSetTicketToUser)){
+            preparedStatement.setString(1, newTicket.getId().toString());
+            preparedStatement.setString(2, user.getId().toString());
+            preparedStatement.setString(3, newTicket.getTicketType().name());
+            preparedStatement.setString(4, newTicket.getCreationDateTime().toString());
+            preparedStatement.executeUpdate();
+            System.out.println("Ticket " + newTicket.getId() + " with User " + user.getName() + " was saved to DB.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        String SQLStatementUpdateUser = "UPDATE user_info SET name = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatementUpdateUser)){
+            preparedStatement.setString(1, "new name");
+            preparedStatement.setString(2, user.getId().toString());
+            preparedStatement.executeUpdate();
+            System.out.println("User " + user.getId() + " changed name.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

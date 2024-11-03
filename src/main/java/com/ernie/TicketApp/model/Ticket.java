@@ -1,10 +1,7 @@
 package com.ernie.TicketApp.model;
 
-import com.ernie.TicketApp.constraint.NullableWarning;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Ticket extends Entity {
 
@@ -17,6 +14,7 @@ public class Ticket extends Entity {
     private double price;
     private LocalDateTime creationDateTime;
     private TicketType ticketType;
+    private User user;
 
     public Ticket(String concertHall, int eventCode, LocalDateTime time, boolean isPromo, char stadiumSector, double maxBackpackWeightInKg) {
 
