@@ -127,15 +127,12 @@ public class TicketApp {
         System.out.println("\n============================= HW 11 (Spring Core 2) ====================================");
         System.out.println("Testing @Transactional. \n");
 
-        TicketService service = context.getBean(TicketService.class);
+        TicketService ticketService = context.getBean(TicketService.class);
 
         User user2 = new User("Ernie");
         userDAO.saveUser(user2);
-        if (!service.isEnabled) {
-            userDAO.updateUserAddTicket(allUsersFromDB.get(1).getId());
-        } else {
-            throw new IllegalArgumentException("Operation disabled");
-        }
+
+        ticketService.updateUserAddTicket(allUsersFromDB.get(0).getId());
 
         System.out.println("\nTesting Resource injection from a file in resources directory. \n");
 
