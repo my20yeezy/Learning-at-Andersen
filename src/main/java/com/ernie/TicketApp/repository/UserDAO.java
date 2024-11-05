@@ -1,8 +1,11 @@
 package com.ernie.TicketApp.repository;
 
 import com.ernie.TicketApp.model.Ticket;
+import com.ernie.TicketApp.model.TicketType;
 import com.ernie.TicketApp.model.User;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -16,15 +19,17 @@ import java.util.UUID;
 @Repository
 public class UserDAO {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
-    public UserDAO(DataSource dataSource) {
+    public UserDAO(DataSource dataSource, JdbcTemplate jdbcTemplate) {
         this.dataSource = dataSource;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void saveUser(User user) {
         String SQLStatement = "INSERT INTO user_info (id, name, creation_date) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)){
+        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(SQLStatement)) {
             preparedStatement.setString(1, user.getId().toString());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getCreationDateTime().toString());
@@ -91,6 +96,19 @@ public class UserDAO {
         }
         System.out.println("Got " + allUsers.size() + " Users from DB.");
         return allUsers;
+    }
+
+    @Transactional
+    public void updateUserAddTicket(UUID id) {
+        Ticket newTicket = new Ticket();
+        newTicket.setTicketType(TicketType.MONTH);
+        String SQLStatementSetTicketToUser = "INSERT INTO ticket_info (id, user_id, ticket_type, creation_date) VALUES (?, ?, ?::ticket_type, ?)";
+        String SQLStatementUpdateUser = "UPDATE user_info SET name = ? WHERE id = ?";
+
+        jdbcTemplate.update(SQLStatementSetTicketToUser, newTicket.getId().toString(), id.toString(), newTicket.getTicketType().name(), newTicket.getCreationDateTime().toString());
+        jdbcTemplate.update(SQLStatementUpdateUser, "new test name", id.toString());
+
+        System.out.println("User " + id + " changed name.");
     }
 
 }
