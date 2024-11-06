@@ -1,56 +1,55 @@
 package com.ernie.TicketApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
-public class Ticket extends Entity {
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "ticket_info")
+public class Ticket {
 
-    private String concertHall;
-    private int eventCode;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
+
+    @Column(name = "time")
     private LocalDateTime time;
+
+    @Column(name = "is_promo")
     private boolean isPromo;
-    private char stadiumSector;
-    private double maxBackpackWeightInKg;
+
+    @Column(name = "price")
     private double price;
+
+    @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ticket_type")
     private TicketType ticketType;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public Ticket(String concertHall, int eventCode, LocalDateTime time, boolean isPromo, char stadiumSector, double maxBackpackWeightInKg) {
-
-        if (concertHall.length() <= 10) {
-            this.concertHall = concertHall;
-        }
-        if (eventCode / 1000 < 1) {
-            this.eventCode = eventCode;
-        }
+    public Ticket(LocalDateTime time, boolean isPromo, TicketType ticketType) {
         this.time = time;
         this.isPromo = isPromo;
-        if (stadiumSector == 'A' || stadiumSector == 'B' || stadiumSector == 'C') {
-            this.stadiumSector = stadiumSector;
-        }
-        this.maxBackpackWeightInKg = maxBackpackWeightInKg;
         if (isPromo) {
             price = 10;
         } else {
             price = 20;
         }
+        this.ticketType = ticketType;
         creationDateTime = LocalDateTime.now();
     }
 
     public Ticket() {
-        creationDateTime = LocalDateTime.now();
-    }
-
-    public Ticket(String concertHall, int eventCode, LocalDateTime time) {
-        if (concertHall.length() <= 10) {
-            this.concertHall = concertHall;
-        }
-        if (eventCode / 1000 < 1) {
-            this.eventCode = eventCode;
-        }
-        this.time = time;
-        price = 20;
         creationDateTime = LocalDateTime.now();
     }
 
@@ -63,29 +62,12 @@ public class Ticket extends Entity {
     }
 
 
-
-    public String getConcertHall() {
-        return concertHall;
-    }
-
-    public int getEventCode() {
-        return eventCode;
-    }
-
     public LocalDateTime getTime() {
         return time;
     }
 
     public boolean isPromo() {
         return isPromo;
-    }
-
-    public char getStadiumSector() {
-        return stadiumSector;
-    }
-
-    public double getMaxBackpackWeightInKg() {
-        return maxBackpackWeightInKg;
     }
 
     public double getPrice() {
@@ -104,10 +86,6 @@ public class Ticket extends Entity {
         this.time = time;
     }
 
-    public void setStadiumSector(char stadiumSector) {
-        this.stadiumSector = stadiumSector;
-    }
-
     public TicketType getTicketType() {
         return ticketType;
     }
@@ -116,28 +94,48 @@ public class Ticket extends Entity {
         this.ticketType = ticketType;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setPromo(boolean promo) {
+        isPromo = promo;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return eventCode == ticket.eventCode && isPromo == ticket.isPromo && stadiumSector == ticket.stadiumSector && Double.compare(maxBackpackWeightInKg, ticket.maxBackpackWeightInKg) == 0 && Double.compare(price, ticket.price) == 0 && Objects.equals(id, ticket.id) && Objects.equals(concertHall, ticket.concertHall) && Objects.equals(time, ticket.time) && Objects.equals(creationDateTime, ticket.creationDateTime);
+        return isPromo == ticket.isPromo && Double.compare(price, ticket.price) == 0 && Objects.equals(id, ticket.id) && Objects.equals(time, ticket.time) && Objects.equals(creationDateTime, ticket.creationDateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, concertHall, eventCode, time, isPromo, stadiumSector, maxBackpackWeightInKg, price, creationDateTime);
+        return Objects.hash(id, time, isPromo, price, creationDateTime);
     }
 
     @Override
     public String toString() {
         return "Ticket{" +
-                "concertHall='" + concertHall + '\'' +
-                ", eventCode=" + eventCode +
                 ", time=" + time +
                 ", isPromo=" + isPromo +
-                ", stadiumSector=" + stadiumSector +
-                ", maxBackpackWeightInKg=" + maxBackpackWeightInKg +
                 ", price=" + price +
                 ", creationDateTime=" + creationDateTime +
                 ", ticketType=" + ticketType +

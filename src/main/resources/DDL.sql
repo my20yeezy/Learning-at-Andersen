@@ -6,36 +6,21 @@ CREATE DATABASE my_ticket_service
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
 
-
-CREATE TABLE user_info
-(
-    id VARCHAR(50) NOT NULL,
-    name VARCHAR(50),
-    creation_date VARCHAR(50),
-    PRIMARY KEY (id)
+CREATE TABLE user_info (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255),
+    creation_date_time TIMESTAMP
 );
-ALTER TABLE IF EXISTS user_info
-    OWNER to postgres;
 
 CREATE TYPE ticket_type AS ENUM ('DAY', 'WEEK', 'MONTH', 'YEAR');
 
-CREATE TABLE ticket_info
-(
-    id VARCHAR(50) NOT NULL,
-    user_id VARCHAR(50),
-    ticket_type ticket_type,
-    creation_date VARCHAR(50),
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user_info(id)
+CREATE TABLE ticket_info (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    time TIMESTAMP,
+    is_promo BOOLEAN,
+    price DOUBLE PRECISION,
+    creation_date_time TIMESTAMP,
+    ticket_type VARCHAR(255),
+    user_id UUID,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_info (id) ON DELETE SET NULL
 );
-ALTER TABLE IF EXISTS ticket_info
-    OWNER to postgres;
-
-ALTER TABLE ticket_info
-DROP CONSTRAINT ticket_info_user_id_fkey;
-
-ALTER TABLE ticket_info
-ADD CONSTRAINT ticket_info_user_id_fkey
-FOREIGN KEY (user_id)
-REFERENCES user_info (id)
-ON DELETE CASCADE;

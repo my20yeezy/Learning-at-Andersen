@@ -1,34 +1,25 @@
 package com.ernie.TicketApp.service;
 
-import com.ernie.TicketApp.model.Entity;
-import com.ernie.TicketApp.repository.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import com.ernie.TicketApp.model.Ticket;
+import com.ernie.TicketApp.model.User;
 
+import java.util.List;
 import java.util.UUID;
 
-@Service
-public class TicketService extends Entity {
+public interface TicketService {
 
-    @Value("${user_ticket_access.enabled}")
-    public boolean isUserTicketAccessEnabled;
+    Ticket saveTicket(Ticket ticket);
 
-    private final TextToStringLoader loader;
-    private final UserDAO userDAO;
+    Ticket getTicketById(UUID id);
 
-    @Autowired
-    public TicketService(UserDAO userDAO, TextToStringLoader loader) {
-        this.loader = loader;
-        this.userDAO = userDAO;
-    }
+    List<Ticket> getAllTickets();
 
-    public void updateUserAddTicket(UUID id) {
-        if (isUserTicketAccessEnabled) {
-            userDAO.updateUserAddTicket(id);
-        } else {
-            throw new IllegalArgumentException("Operation is disabled");
-        }
-    }
+    void updateTicket(Ticket ticket);
+
+    void deleteTicket(Ticket ticket);
+
+    void deleteTicketById(UUID id);
+
+    void setTicketToUser(Ticket ticket, User user);
 
 }
