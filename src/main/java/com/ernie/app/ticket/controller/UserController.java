@@ -1,8 +1,9 @@
-package com.ernie.TicketApp.controller;
+package com.ernie.app.ticket.controller;
 
-import com.ernie.TicketApp.model.User;
-import com.ernie.TicketApp.service.TicketService;
-import com.ernie.TicketApp.service.UserService;
+import com.ernie.app.ticket.model.User;
+import com.ernie.app.ticket.service.TicketService;
+import com.ernie.app.ticket.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +13,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final TicketService ticketService;
     private final UserService userService;
-
-    public UserController(TicketService ticketService, UserService userService) {
-        this.ticketService = ticketService;
-        this.userService = userService;
-    }
 
     @GetMapping
     public List<User> getAllUsers() {

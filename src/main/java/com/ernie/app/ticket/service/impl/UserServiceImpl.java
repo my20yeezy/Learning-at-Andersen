@@ -1,12 +1,12 @@
-package com.ernie.TicketApp.service.impl;
+package com.ernie.app.ticket.service.impl;
 
-import com.ernie.TicketApp.model.Ticket;
-import com.ernie.TicketApp.model.TicketType;
-import com.ernie.TicketApp.model.User;
-import com.ernie.TicketApp.repository.TicketRepository;
-import com.ernie.TicketApp.repository.UserRepository;
-import com.ernie.TicketApp.service.TicketService;
-import com.ernie.TicketApp.service.UserService;
+import com.ernie.app.ticket.model.Ticket;
+import com.ernie.app.ticket.model.User;
+import com.ernie.app.ticket.repository.TicketRepository;
+import com.ernie.app.ticket.repository.UserRepository;
+import com.ernie.app.ticket.service.TicketService;
+import com.ernie.app.ticket.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Value("${user_update_and_ticket_creation.enabled}")
@@ -22,12 +23,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final TicketRepository ticketRepository;
     private final TicketService ticketService;
-
-    public UserServiceImpl(UserRepository userRepository, TicketRepository ticketRepository, TicketService ticketService) {
-        this.userRepository = userRepository;
-        this.ticketRepository = ticketRepository;
-        this.ticketService = ticketService;
-    }
 
     @Override
     public User saveUser(User user) {

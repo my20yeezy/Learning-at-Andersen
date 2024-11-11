@@ -1,11 +1,12 @@
-package com.ernie.TicketApp.service.impl;
+package com.ernie.app.ticket.service.impl;
 
-import com.ernie.TicketApp.model.Ticket;
-import com.ernie.TicketApp.model.User;
-import com.ernie.TicketApp.repository.TicketRepository;
-import com.ernie.TicketApp.repository.UserRepository;
-import com.ernie.TicketApp.service.TextToStringLoader;
-import com.ernie.TicketApp.service.TicketService;
+import com.ernie.app.ticket.model.Ticket;
+import com.ernie.app.ticket.model.User;
+import com.ernie.app.ticket.repository.TicketRepository;
+import com.ernie.app.ticket.repository.UserRepository;
+import com.ernie.app.ticket.service.TextToStringLoader;
+import com.ernie.app.ticket.service.TicketService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
     @Value("${user_update_and_ticket_creation.enabled}")
@@ -23,13 +25,6 @@ public class TicketServiceImpl implements TicketService {
     private final TextToStringLoader loader;
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository, TextToStringLoader loader, UserRepository userRepository) {
-        this.ticketRepository = ticketRepository;
-        this.loader = loader;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public Ticket saveTicket(Ticket ticket) {
@@ -70,5 +65,10 @@ public class TicketServiceImpl implements TicketService {
         user.getTickets().add(ticket);
         ticketRepository.save(ticket);
         userRepository.save(user);
+    }
+
+    @Override
+    public Ticket getTicketByUser(User user) {
+        return ticketRepository.findByUser(user);
     }
 }

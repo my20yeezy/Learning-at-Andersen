@@ -1,7 +1,7 @@
-package com.ernie.TicketApp.service;
+package com.ernie.app.ticket.service;
 
-import com.ernie.TicketApp.model.Ticket;
-import com.ernie.TicketApp.model.User;
+import com.ernie.app.ticket.model.Ticket;
+import com.ernie.app.ticket.model.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,5 +21,7 @@ public interface TicketService {
     void deleteTicketById(UUID id);
 
     void setTicketToUser(Ticket ticket, User user);
+
+    Ticket getTicketByUser(User user);
 
 }

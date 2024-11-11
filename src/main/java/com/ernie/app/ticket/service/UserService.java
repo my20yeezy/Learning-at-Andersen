@@ -1,6 +1,6 @@
-package com.ernie.TicketApp.service;
+package com.ernie.app.ticket.service;
 
-import com.ernie.TicketApp.model.User;
+import com.ernie.app.ticket.model.User;
 
 import java.util.List;
 import java.util.UUID;

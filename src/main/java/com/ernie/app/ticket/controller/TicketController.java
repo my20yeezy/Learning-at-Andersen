@@ -1,9 +1,10 @@
-package com.ernie.TicketApp.controller;
+package com.ernie.app.ticket.controller;
 
-import com.ernie.TicketApp.config.ThisIsMyFirstConditionalBean;
-import com.ernie.TicketApp.model.Ticket;
-import com.ernie.TicketApp.service.TicketService;
-import com.ernie.TicketApp.service.UserService;
+import com.ernie.app.ticket.config.ThisIsMyFirstConditionalBean;
+import com.ernie.app.ticket.model.Ticket;
+import com.ernie.app.ticket.service.TicketService;
+import com.ernie.app.ticket.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tickets")
+@RequiredArgsConstructor
 public class TicketController {
 
     private final TicketService ticketService;
@@ -21,11 +23,6 @@ public class TicketController {
 
     @Autowired(required = false)
     private ThisIsMyFirstConditionalBean thisIsMyFirstConditionalBean;
-
-    public TicketController(TicketService ticketService, UserService userService) {
-        this.ticketService = ticketService;
-        this.userService = userService;
-    }
 
     @GetMapping
     public List<Ticket> getAllTickets() {

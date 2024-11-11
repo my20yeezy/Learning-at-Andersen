@@ -1,4 +1,4 @@
-package com.ernie.TicketApp.config;
+package com.ernie.app.ticket.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

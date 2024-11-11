@@ -1,20 +1,5 @@
-package com.ernie.TicketApp;
+package com.ernie.app.ticket;
 
-import com.ernie.HW6CustomStorages.MyArrayList;
-import com.ernie.HW6CustomStorages.MyHashSet;
-import com.ernie.TicketApp.model.Ticket;
-import com.ernie.TicketApp.model.TicketType;
-import com.ernie.TicketApp.model.User;
-import com.ernie.TicketApp.repository.TicketDAO;
-import com.ernie.TicketApp.repository.UserDAO;
-import com.ernie.TicketApp.service.TextToStringLoader;
-import com.ernie.TicketApp.service.TicketService;
-import com.ernie.TicketApp.service.impl.TicketServiceImpl;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class TicketServiceTest {
     //Temporary moving old main method here, until HW13 is done

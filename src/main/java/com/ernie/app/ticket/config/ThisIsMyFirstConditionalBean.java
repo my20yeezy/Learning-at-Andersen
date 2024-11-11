@@ -1,4 +1,4 @@
-package com.ernie.TicketApp.config;
+package com.ernie.app.ticket.config;
 
 public class ThisIsMyFirstConditionalBean {
 

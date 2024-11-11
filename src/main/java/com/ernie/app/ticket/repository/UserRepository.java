@@ -1,6 +1,6 @@
-package com.ernie.TicketApp.repository;
+package com.ernie.app.ticket.repository;
 
-import com.ernie.TicketApp.model.User;
+import com.ernie.app.ticket.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
