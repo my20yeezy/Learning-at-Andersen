@@ -1,4 +1,4 @@
-package com.ernie.TicketApp.service;
+package com.ernie.app.ticket.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
