@@ -1,4 +1,4 @@
-package com.ernie.TicketApp.model;
+package com.ernie.app.ticket.model;
 
 public enum TicketType {
     DAY,

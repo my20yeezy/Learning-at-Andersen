@@ -1,4 +1,4 @@
-package com.ernie.TicketApp.constraint;
+package com.ernie.app.ticket.constraint;
 
 import java.lang.reflect.Field;
 
