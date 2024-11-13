@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Value;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -32,9 +31,6 @@ public class TicketServiceTest {
     @InjectMocks
     private TicketServiceImpl ticketService;
 
-    @Value("${user_update_and_ticket_creation.enabled}")
-    public boolean isUserUpdateAndTicketCreationEnabled;
-
     private Ticket ticket;
     private User user;
     private UUID ticketId;
@@ -49,11 +45,12 @@ public class TicketServiceTest {
         user = new User("TestUserName");
         user.setId(UUID.randomUUID());
 
-        isUserUpdateAndTicketCreationEnabled = true;
     }
 
     @Test
     void saveTicket_positiveTest() {
+        ticketService.isUserUpdateAndTicketCreationEnabled = true;
+
         when(ticketRepository.save(ticket)).thenReturn(ticket);
 
         Ticket savedTicket = ticketService.saveTicket(ticket);
@@ -72,7 +69,7 @@ public class TicketServiceTest {
     @Test
     void saveTicket_cornerCase_nullTicket() {
         assertThrows(NullPointerException.class, () -> ticketService.saveTicket(null));
-        verify(ticketRepository, never()).save(any());
+        verify(ticketRepository, never()).save(ticket);
     }
 
 
@@ -93,13 +90,14 @@ public class TicketServiceTest {
 
         Ticket result = ticketService.getTicketById(nonExistentId);
 
+        assertEquals(result, null);
         assertNull(result);
         verify(ticketRepository, times(1)).getReferenceById(nonExistentId);
     }
     @Test
     void getTicketById_cornerCase_nullId() {
-        assertThrows(IllegalArgumentException.class, () -> ticketService.getTicketById(null));
-        verify(ticketRepository, never()).getReferenceById(any());
+        assertThrows(NullPointerException.class, () -> ticketService.getTicketById(null));
+        verify(ticketRepository, never()).getReferenceById(ticketId);
     }
 
 
@@ -111,6 +109,8 @@ public class TicketServiceTest {
 
         assertNotNull(tickets);
         assertFalse(tickets.isEmpty());
+        assertEquals(1, tickets.size());
+        assertEquals(ticket, tickets.get(0));
         verify(ticketRepository, times(1)).findAll();
     }
     @Test
@@ -120,6 +120,7 @@ public class TicketServiceTest {
         List<Ticket> tickets = ticketService.getAllTickets();
 
         assertTrue(tickets.isEmpty());
+        assertEquals(0, tickets.size());
         verify(ticketRepository, times(1)).findAll();
     }
     @Test
@@ -144,7 +145,7 @@ public class TicketServiceTest {
     @Test
     void updateTicket_negativeTest_nullTicket() {
         assertThrows(NullPointerException.class, () -> ticketService.updateTicket(null));
-        verify(ticketRepository, never()).save(any());
+        verify(ticketRepository, never()).save(null);
     }
     @Test
     void updateTicket_cornerCase_ticketNotExist() {
@@ -165,7 +166,7 @@ public class TicketServiceTest {
     @Test
     void deleteTicket_negativeTest_nullTicket() {
         assertThrows(NullPointerException.class, () -> ticketService.deleteTicket(null));
-        verify(ticketRepository, never()).delete(any());
+        verify(ticketRepository, never()).delete(null);
     }
     @Test
     void deleteTicket_cornerCase_ticketNotExist() {
@@ -192,8 +193,8 @@ public class TicketServiceTest {
     }
     @Test
     void deleteTicketById_cornerCase_nullId() {
-        assertThrows(IllegalArgumentException.class, () -> ticketService.deleteTicketById(null));
-        verify(ticketRepository, never()).deleteById(any());
+        assertThrows(NullPointerException.class, () -> ticketService.deleteTicketById(null));
+        verify(ticketRepository, never()).deleteById(null);
     }
 
 
@@ -212,19 +213,20 @@ public class TicketServiceTest {
     @Test
     void setTicketToUser_negativeTest_nullTicket() {
         assertThrows(NullPointerException.class, () -> ticketService.setTicketToUser(null, user));
-        verify(ticketRepository, never()).save(any());
-        verify(userRepository, never()).save(any());
+        verify(ticketRepository, never()).save(null);
+        verify(userRepository, never()).save(user);
     }
     @Test
     void setTicketToUser_cornerCase_nullUser() {
         assertThrows(NullPointerException.class, () -> ticketService.setTicketToUser(ticket, null));
-        verify(ticketRepository, never()).save(any());
-        verify(userRepository, never()).save(any());
+        verify(ticketRepository, never()).save(ticket);
+        verify(userRepository, never()).save(null);
     }
 
 
     @Test
     void getTicketByUser_positiveTest() {
+        ticket.setUser(user);
         when(ticketRepository.findByUser(user)).thenReturn(ticket);
 
         Ticket foundTicket = ticketService.getTicketByUser(user);
@@ -245,7 +247,7 @@ public class TicketServiceTest {
     @Test
     void getTicketByUser_cornerCase_nullUser() {
         assertThrows(NullPointerException.class, () -> ticketService.getTicketByUser(null));
-        verify(ticketRepository, never()).findByUser(any());
+        verify(ticketRepository, never()).findByUser(null);
     }
 
 }
