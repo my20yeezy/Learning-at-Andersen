@@ -28,6 +28,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket saveTicket(Ticket ticket) {
+        if (ticket == null) {
+            throw new NullPointerException("Ticket is null");
+        }
         if (isUserUpdateAndTicketCreationEnabled) {
             return ticketRepository.save(ticket);
         } else throw new IllegalArgumentException("Operation is disabled.");
@@ -35,6 +38,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket getTicketById(UUID id) {
+        if (id == null) {
+            throw new NullPointerException("Ticket ID is null");
+        }
         return ticketRepository.getReferenceById(id);
     }
 
@@ -45,16 +51,25 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void updateTicket(Ticket ticket) {
+        if (ticket == null) {
+            throw new NullPointerException("Ticket is null");
+        }
         ticketRepository.save(ticket);
     }
 
     @Override
     public void deleteTicket(Ticket ticket) {
+        if (ticket == null) {
+            throw new NullPointerException("Ticket is null");
+        }
         ticketRepository.delete(ticket);
     }
 
     @Override
     public void deleteTicketById(UUID id) {
+        if (id == null) {
+            throw new NullPointerException("Ticket ID is null");
+        }
         ticketRepository.deleteById(id);
     }
 
@@ -69,6 +84,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket getTicketByUser(User user) {
+        if (user == null) {
+            throw new NullPointerException("User is null");
+        }
         return ticketRepository.findByUser(user);
     }
 }
